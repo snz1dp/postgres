@@ -1,0 +1,98 @@
+
+# 名称
+name: postgres
+
+# 镜像编译参数
+docker:
+  # 镜像名称
+  image: gitlab.snz1.cn:9008/database/postgres
+  # 镜像编译文件(默认：Dockerfile)
+  file: Dockerfile
+
+# 组件发布
+publish:
+- bash
+- -c
+- scp out/{{ .Name }}-{{ .Version }}.tgz* root@gitlab.snz1.cn:/data/download/snz1dp/
+
+# 服务定义
+service:
+  # 端口定义
+  ports:
+  - 5432:5432
+
+  # 自定义卷
+  volumes:
+  - data:/var/lib/postgresql/data
+  - init-db.sh:/docker-entrypoint-initdb.d/init-db.sh:z
+  - patch-conf.sh:/docker-entrypoint-initdb.d/patch-conf.sh:z
+
+  # 环境便利那个
+  envs:
+  - LOG_TIMEZONE=Asia/Shanghai
+  - TIMEZONE=Asia/Shanghai
+  - TZ=Asia/Shanghai
+  - POSTGRES_USER={{ .Postgres.Admin.Username }}
+  - POSTGRES_PASSWORD={{ .Postgres.Admin.Password }}
+
+  # 心跳检查
+  healthcheck:
+    test:
+    - CMD
+    - pg_isready
+    - -d
+    - postgres
+    - -U
+    - ${POSTGRES_USER}
+    interval: 60s
+    timeout: 10s
+    period: 10s
+    retries: 30
+
+  # 内置文件
+  files:
+    init-db.sh: |
+      #!/bin/bash
+      source /docker-entrypoint.sh
+      docker_process_sql -f <(cat<<EOF
+      CREATE DATABASE gitlab WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE ingress WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE xeai WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE conf WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE logdata WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE snz1dp WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE jobmgr WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE filerepo WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE gateway WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE console WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE related WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE essp WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE activiti WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE todo WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE sonarqube WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
+
+      EOF
+      )
+    patch-conf.sh: |
+      #!/bin/bash
+      set -Eeo pipefail
+      sed -i "s,max_connections = 100,max_connections = ${MAX_CONNECTIONS:-8192},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,shared_buffers = 128MB,shared_buffers = ${SHARED_BUFFERS:-512MB},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,#temp_buffers = 8MB,temp_buffers = ${TEMP_BUFFERS:-512MB},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,#work_mem = 4MB,work_mem = ${WORK_MEM:-64MB},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,#maintenance_work_mem = 64MB,maintenance_work_mem = ${MAINTENANCE_WORK_MEM:-128MB},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,#max_files_per_process = 1000,max_files_per_process = ${MAX_FILES_PER_PROCESS:-65535},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,#max_prepared_transactions = 0,max_prepared_transactions = ${MAX_PREPARED_TRANSACTIONS:-8192},g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,log_timezone = 'Etc/UTC',log_timezone = '${LOG_TIMEZONE:-Asia/Shanghai}',g" \
+        /var/lib/postgresql/data/postgresql.conf
+      sed -i "s,timezone = 'Etc/UTC',timezone = '${TIMEZONE:-Asia/Shanghai}',g" \
+        /var/lib/postgresql/data/postgresql.conf
+      exit 0

@@ -1,0 +1,3 @@
+gitlab.snz1.cn:9008/sorintlab/stolon:v0.17.0-pg9.6
+gitlab.snz1.cn:9008/database/postgres:9.6.24
+gitlab.snz1.cn:9008/jwilder/dockerize:0.6.1
