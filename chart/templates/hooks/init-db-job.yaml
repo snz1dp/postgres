@@ -43,7 +43,7 @@ spec:
       - name: create-database-job
         image: "{{ .Values.image.postgres }}"
         env:
-          - name: USERNAME
+          - name: PGUSER
 {{- if not (empty .Values.superuserSecret.name) }}
             valueFrom:
               secretKeyRef:
@@ -61,8 +61,10 @@ spec:
 {{- else }}
             value: {{ .Values.superuserPassword | quote }}
 {{- end }}
-          - name: HOST
+          - name: PGHOST
             value: {{ template "stolon.fullname" . }}
+          - name: PGPORT
+            value: {{ .Values.proxy.service.ports.proxy.port | quote }}
         command: ["/bin/bash", "-e", "/tmp/sql-script/create_script.sh"]
         volumeMounts:
           - mountPath: "/tmp/sql-script"

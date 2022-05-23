@@ -203,7 +203,7 @@ initdbScripts:
   create_script.sh: |
     #!/bin/bash
     source /docker-entrypoint.sh
-    docker_process_sql -f <(cat<<EOF
+    docker_execute_sql -f <(cat<<EOF
     CREATE DATABASE gitlab WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE ingress WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE xeai WITH OWNER ${POSTGRES_USER:-postgres};
@@ -220,7 +220,6 @@ initdbScripts:
     CREATE DATABASE todo WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE sonarqube WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
-
     EOF
     )
 
