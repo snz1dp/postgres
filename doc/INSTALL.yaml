@@ -1,0 +1,39 @@
+snz1dp:
+  admin:
+    email: root@localhost.com
+    encoded_password: 7318ab2b01981bf5d8d896e46cb129fac901e0ee56b7
+    username: root
+  ingress:
+    host: localhost
+    port: 80
+    protocol: http
+  namespace: snz1dp-system
+  organization: ChangSha SNZ1
+  registry:
+    encoded_password: 3433eb8d46dab894a91f6571fe59c0704e8dd2f6d85553fab40e
+    secure: true
+    url: gitlab.snz1.cn:9008
+    username: deploy
+  timezone: Asia/Shanghai
+  version: 1.0-alpha
+
+postgres:
+  admin:
+    password: snz1dp9527
+    username: postgres
+  host: postgres
+  install: true
+  port: 5432
+  version: "9.6.24"
+  config:
+    envs:
+    - MAX_CONNECTIONS="8192"
+    - MAX_PREPARED_TRANSACTIONS="8192"
+    - MAX_FILES_PER_PROCESS="65535"
+    - SHARED_BUFFERS="4096MB"
+    - TEMP_BUFFERS="2048MB"
+    - WORK_MEM="256MB"
+    - MAINTENANCE_WORK_MEM="1024MB"
+    - LOG_TIMEZONE="Asia/Shanghai"
+    - TIMEZONE="Asia/Shanghai"
+    - AUTOVACUUM="on"

@@ -95,4 +95,7 @@ service:
         /var/lib/postgresql/data/postgresql.conf
       sed -i "s,timezone = 'Etc/UTC',timezone = '${TIMEZONE:-Asia/Shanghai}',g" \
         /var/lib/postgresql/data/postgresql.conf
+      if [ "${AUTOVACUUM}" == "on" ];then
+        sed -i "s,#autovacuum = on',autovacuum = on,g" /var/lib/postgresql/data/postgresql.conf
+      fi
       exit 0
