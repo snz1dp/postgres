@@ -44,7 +44,7 @@ service:
     - postgres
     - -U
     - ${POSTGRES_USER}
-    interval: 60s
+    interval: 10s
     timeout: 10s
     period: 10s
     retries: 30
@@ -53,7 +53,7 @@ service:
   files:
     init-db.sh: |
       #!/bin/bash
-      source /docker-entrypoint.sh
+      source /usr/local/bin/docker-entrypoint.sh
       docker_process_sql -f <(cat<<EOF
       CREATE DATABASE gitlab WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE ingress WITH OWNER ${POSTGRES_USER:-postgres};

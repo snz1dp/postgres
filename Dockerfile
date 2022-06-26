@@ -1,5 +1,3 @@
-FROM postgres:9.6.24
+FROM postgres:14.4
 
-ADD scripts/docker-entrypoint.sh /
-
-RUN chmod +x /docker-entrypoint.sh
+ADD scripts/docker-entrypoint.sh /usr/local/bin/

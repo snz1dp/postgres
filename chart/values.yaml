@@ -1,13 +1,13 @@
 # clusterName:
 image:
   repository: gitlab.snz1.cn:9008/sorintlab/stolon
-  tag: v0.17.0-pg9.6
+  tag: master-pg14
   pullPolicy: IfNotPresent
   ## Add secrets manually via kubectl on kubernetes cluster and reference here
   pullSecrets: []
   #   - name: "myKubernetesSecret"
 
-  postgres: gitlab.snz1.cn:9008/database/postgres:9.6.24
+  postgres: gitlab.snz1.cn:9008/database/postgres:14.4
   dockerize: gitlab.snz1.cn:9008/jwilder/dockerize:0.6.1
 
 debug: false

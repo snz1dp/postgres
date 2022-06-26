@@ -45,12 +45,12 @@ docker_create_db_directories() {
 	chmod 775 /var/run/postgresql || :
 
 	# Create the transaction log directory before initdb is run so the directory is owned by the correct user
-	if [ -n "$POSTGRES_INITDB_XLOGDIR" ]; then
-		mkdir -p "$POSTGRES_INITDB_XLOGDIR"
+	if [ -n "${POSTGRES_INITDB_WALDIR:-}" ]; then
+		mkdir -p "$POSTGRES_INITDB_WALDIR"
 		if [ "$user" = '0' ]; then
-			find "$POSTGRES_INITDB_XLOGDIR" \! -user postgres -exec chown postgres '{}' +
+			find "$POSTGRES_INITDB_WALDIR" \! -user postgres -exec chown postgres '{}' +
 		fi
-		chmod 700 "$POSTGRES_INITDB_XLOGDIR"
+		chmod 700 "$POSTGRES_INITDB_WALDIR"
 	fi
 
 	# allow the container to be started with `--user`
@@ -84,8 +84,8 @@ docker_init_database_dir() {
 		done
 	fi
 
-	if [ -n "$POSTGRES_INITDB_XLOGDIR" ]; then
-		set -- --xlogdir "$POSTGRES_INITDB_XLOGDIR" "$@"
+	if [ -n "${POSTGRES_INITDB_WALDIR:-}" ]; then
+		set -- --waldir "$POSTGRES_INITDB_WALDIR" "$@"
 	fi
 
 	eval 'initdb --username="$POSTGRES_USER" --pwfile=<(echo "$POSTGRES_PASSWORD") '"$POSTGRES_INITDB_ARGS"' "$@"'
@@ -172,10 +172,11 @@ docker_process_init_files() {
 					. "$f"
 				fi
 				;;
-			*.sql)    echo "$0: running $f"; docker_process_sql -f "$f"; echo ;;
-			*.sql.gz) echo "$0: running $f"; gunzip -c "$f" | docker_process_sql; echo ;;
-			*.sql.xz) echo "$0: running $f"; xzcat "$f" | docker_process_sql; echo ;;
-			*)        echo "$0: ignoring $f" ;;
+			*.sql)     echo "$0: running $f"; docker_process_sql -f "$f"; echo ;;
+			*.sql.gz)  echo "$0: running $f"; gunzip -c "$f" | docker_process_sql; echo ;;
+			*.sql.xz)  echo "$0: running $f"; xzcat "$f" | docker_process_sql; echo ;;
+			*.sql.zst) echo "$0: running $f"; zstd -dc "$f" | docker_process_sql; echo ;;
+			*)         echo "$0: ignoring $f" ;;
 		esac
 		echo
 	done
@@ -258,10 +259,6 @@ pg_setup_hba_conf() {
 	local auth
 	# check the default/configured encryption and use that as the auth method
 	auth="$(postgres -C password_encryption "$@")"
-	# postgres 9 only reports "on" and not "md5"
-	if [ "$auth" = 'on' ]; then
-		auth='md5'
-	fi
 	: "${POSTGRES_HOST_AUTH_METHOD:=$auth}"
 	{
 		echo
