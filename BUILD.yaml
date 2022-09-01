@@ -75,6 +75,7 @@ service:
       CREATE DATABASE todo WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE sonarqube WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE wikijs WITH OWNER ${POSTGRES_USER:-postgres};
 
       EOF
       )
