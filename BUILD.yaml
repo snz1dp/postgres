@@ -17,7 +17,7 @@ docker:
 publish:
 - bash
 - -c
-- scp out/{{ .Name }}-{{ .Version }}.tgz* root@gitlab.snz1.cn:/data/download/snz1dp/
+- scp -P 92 out/{{ .Name }}-{{ .Version }}.tgz* root@gitlab.snz1.cn:/data/download/snz1dp/
 
 # 服务定义
 service:
