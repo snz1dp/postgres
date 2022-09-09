@@ -5,9 +5,7 @@ name: postgres
 # 镜像编译参数
 docker:
   # 镜像名称
-  image: gitlab.snz1.cn:9288/database/postgres
-  # 镜像编译文件(默认：Dockerfile)
-  file: Dockerfile
+  image: postgres
   # 目标平台
   platform:
   - linux/amd64
@@ -33,8 +31,6 @@ service:
 
   # 环境便利那个
   envs:
-  - LOG_TIMEZONE=Asia/Shanghai
-  - TIMEZONE=Asia/Shanghai
   - TZ=Asia/Shanghai
   - POSTGRES_USER={{ .Postgres.Admin.Username }}
   - POSTGRES_PASSWORD={{ .Postgres.Admin.Password }}
@@ -74,8 +70,8 @@ service:
       CREATE DATABASE activiti WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE todo WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE sonarqube WITH OWNER ${POSTGRES_USER:-postgres};
-      CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
       CREATE DATABASE wikijs WITH OWNER ${POSTGRES_USER:-postgres};
+      CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
 
       EOF
       )

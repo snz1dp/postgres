@@ -1,14 +1,14 @@
 # clusterName:
 image:
-  repository: gitlab.snz1.cn:9008/sorintlab/stolon
+  repository: sorintlab/stolon
   tag: master-pg14
   pullPolicy: IfNotPresent
   ## Add secrets manually via kubectl on kubernetes cluster and reference here
   pullSecrets: []
   #   - name: "myKubernetesSecret"
 
-  postgres: gitlab.snz1.cn:9008/database/postgres:14.4
-  dockerize: gitlab.snz1.cn:9008/jwilder/dockerize:0.6.1
+  postgres: postgres:14.4
+  dockerize: jwilder/dockerize:0.6.1
 
 debug: false
 
@@ -146,7 +146,9 @@ keeper:
   podDisruptionBudget:
     # minAvailable: 1
     # maxUnavailable: 1
-  extraEnv: []
+  extraEnv:
+    - name: TZ
+      value: Asia/Shanghai
   #  - name: STKEEPER_LOG_LEVEL
   #    value: "info"
 
@@ -170,7 +172,9 @@ proxy:
   podDisruptionBudget:
     # minAvailable: 1
     # maxUnavailable: 1
-  extraEnv: []
+  extraEnv:
+    - name: TZ
+      value: Asia/Shanghai
   #  - name: STPROXY_LOG_LEVEL
   #    value: "info"
   #  - name: STPROXY_TCP_KEEPALIVE_COUNT
@@ -191,7 +195,9 @@ sentinel:
   podDisruptionBudget:
     # minAvailable: 1
     # maxUnavailable: 1
-  extraEnv: []
+  extraEnv:
+    - name: TZ
+      value: Asia/Shanghai
   #  - name: STSENTINEL_LOG_LEVEL
   #    value: "info"
 
@@ -219,6 +225,7 @@ initdbScripts:
     CREATE DATABASE activiti WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE todo WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE sonarqube WITH OWNER ${POSTGRES_USER:-postgres};
+    CREATE DATABASE wikijs WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE demo WITH OWNER ${POSTGRES_USER:-postgres};
     EOF
     )
