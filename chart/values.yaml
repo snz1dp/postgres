@@ -7,7 +7,7 @@ image:
   pullSecrets: []
   #   - name: "myKubernetesSecret"
 
-  postgres: postgres:14.4
+  postgres: gitlab.snz1.cn:9288/database/postgres:14.4
   dockerize: jwilder/dockerize:0.6.1
 
 debug: false
