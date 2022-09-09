@@ -32,7 +32,7 @@ NoSQL：JSON，JSONB，XML，HStore 原生支持，至 NoSQL 数据库的外部�
 
 ## 3、Helm方式安装
 
-拉取相关依赖镜像转推到现场仓库:
+下载组件文件<http://gitlab.snz1.cn:2007/download/snz1dp/postgres-14.4.tgz>到本地，然后拉取相关依赖镜像转推到项目现场仓库，具体操作如下：
 
 ```bash
 docker pull gitlab.snz1.cn:9288/database/postgres:14.4
@@ -49,15 +49,24 @@ docker push repo.docker:2008/database/jwilder/dockerize:0.6.1
 ```
 
 > 注意把`repo.docker:2008`地址换成实际仓库地址。
+{.is-warning}
 
+确保当前操作机器能进行集群操作，执行以下Helm命令安装
 
 ```bash
-helm install postgres \
-  postgres-14.4.tgz \
+helm install \
+  postgres \ # 安装名称
+  postgres-14.4.tgz \ # 下载的组件文件路径
+  --namespace database \ # 请注意更换安装的目标名字空间
   --set image.repository=repo.docker:2008/database/sorintlab/stolon \
   --set image.tag=master-pg14 \
   --set image.postgres=repo.docker:2008/database/postgres:14.4 \
   --set image.dockerize=repo.docker:2008/database/jwilder/dockerize:0.6.1 \
-  --set persistence.storageClassName=rbd \
-  --set persistence.size=10Gi
+  --set persistence.storageClassName=rbd \ # 选择持久卷类型
+  --set persistence.size=10Gi \ # 数据库空间大小
+  --set superuserUsername=postgres \ # 超级管理员
+  --set superuserPassword=snz1dp9527 # 管理员密码
 ```
+
+> 注：注意这里使用集群内的镜像仓库地址
+{.is-warning}
