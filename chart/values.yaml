@@ -208,8 +208,8 @@ sentinel:
 initdbScripts:
   create_script.sh: |
     #!/bin/bash
-    source /docker-entrypoint.sh
-    docker_execute_sql -f <(cat<<EOF
+    source /usr/local/bin/docker-entrypoint.sh
+    docker_process_sql -f <(cat<<EOF
     CREATE DATABASE gitlab WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE ingress WITH OWNER ${POSTGRES_USER:-postgres};
     CREATE DATABASE xeai WITH OWNER ${POSTGRES_USER:-postgres};
