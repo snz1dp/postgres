@@ -16,8 +16,12 @@ debug:
 package:
 	snz1dpctl make package
 
+# 打包镜像
+docker:
+	snz1dpctl make docker
+
 # 发布组件
-publish: package
+publish:
 	snz1dpctl make publish
 
 # 启动独立运行模式
