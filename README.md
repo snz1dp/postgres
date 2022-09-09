@@ -30,3 +30,34 @@ NoSQL：JSON，JSONB，XML，HStore 原生支持，至 NoSQL 数据库的外部�
 
 数据仓库：能平滑迁移至同属 PostgreSQL 生态的 GreenPlum，DeepGreen，HAWK 等，使用 FDW 进行 ETL。
 
+## 3、Helm方式安装
+
+拉取相关依赖镜像转推到现场仓库:
+
+```bash
+docker pull gitlab.snz1.cn:9288/database/postgres:14.4
+docker tag gitlab.snz1.cn:9288/database/postgres:14.4 repo.docker:2008/database/postgres:14.4
+docker push repo.docker:2008/database/postgres:14.4
+
+docker pull sorintlab/stolon:master-pg14
+docker tag sorintlab/stolon:master-pg14 repo.docker:2008/database/sorintlab/stolon:master-pg14
+docker push repo.docker:2008/database/sorintlab/stolon:master-pg14
+
+docker pull jwilder/dockerize:0.6.1
+docker tag jwilder/dockerize:0.6.1 repo.docker:2008/database/jwilder/dockerize:0.6.1
+docker push repo.docker:2008/database/jwilder/dockerize:0.6.1
+```
+
+> 注意把`repo.docker:2008`地址换成实际仓库地址。
+
+
+```bash
+helm install postgres \
+  postgres-14.4.tgz \
+  --set image.repository=repo.docker:2008/database/sorintlab/stolon \
+  --set image.tag=master-pg14 \
+  --set image.postgres=repo.docker:2008/database/postgres:14.4 \
+  --set image.dockerize=repo.docker:2008/database/jwilder/dockerize:0.6.1 \
+  --set persistence.storageClassName=rbd \
+  --set persistence.size=10Gi
+```
