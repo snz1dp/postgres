@@ -30,7 +30,51 @@ NoSQL：JSON，JSONB，XML，HStore 原生支持，至 NoSQL 数据库的外部�
 
 数据仓库：能平滑迁移至同属 PostgreSQL 生态的 GreenPlum，DeepGreen，HAWK 等，使用 FDW 进行 ETL。
 
-## 3、Helm方式安装
+## 3、发布组件
+
+### 3.1、添加Helm仓库
+
+> 如果已添加了仓库则忽略此操作：
+
+```bash
+helm repo add \
+  --username <Nexus用户名> \
+  --password <Nexus用户密码>  \
+  snz1dp-nexus https://snz1.cn/nexus/repository/helm-hosted
+```
+
+> 请注意把`<Nexus用户名>`与`<Nexus用户密码>`更换成实际的用户名密码。
+
+### 3.2、发布组件包
+
+```bash
+make publish --helmrepo snz1dp-nexus
+```
+
+> 发布时请按提示输入Nexus用户名及密码。
+
+
+## 4、Helm方式安装
+
+### 4.1、添加Helm仓库
+
+> 如果已添加了仓库则忽略此操作：
+
+```bash
+helm repo add \
+  --username <Nexus用户名> \
+  --password <Nexus用户密码>  \
+  snz1dp-nexus https://snz1.cn/nexus/repository/helm-hosted
+```
+
+> 请注意把`<Nexus用户名>`与`<Nexus用户密码>`更换成实际的用户名密码。
+
+### 4.2、下载Postgres组件包
+
+```
+helm repo update snz1dp-nexus
+
+```
 
 下载组件文件<http://gitlab.snz1.cn:2007/download/snz1dp/postgres-14.4.tgz>到本地，然后拉取相关依赖镜像转推到项目现场仓库，具体操作如下：
 

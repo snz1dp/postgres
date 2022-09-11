@@ -14,10 +14,8 @@ docker:
   - linux/arm64
 
 # 组件发布
-publish:
-- bash
-- -c
-- scp -P 92 out/{{ .Name }}-{{ .Version }}.tgz* root@gitlab.snz1.cn:/data/download/snz1dp/
+helmpush:
+  name: snz1dp-nexus
 
 # 服务定义
 service:
