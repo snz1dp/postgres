@@ -58,7 +58,7 @@ make publish --helmrepo snz1dp-nexus
 
 ### 4.1、添加Helm仓库
 
-> 如果已添加了仓库则忽略此操作：
+> 请在工作机器进行Helm仓库添加，如果工作机已添加了仓库则忽略此操作：
 
 ```bash
 helm repo add \
@@ -71,12 +71,21 @@ helm repo add \
 
 ### 4.2、下载Postgres组件包
 
+> 在工作机执行以下命令更新仓库并下载组件包文件：
+{.is-info}
+
 ```
 helm repo update snz1dp-nexus
-
+helm pull snz1dp-nexus/postgres --version 14.4
 ```
 
-下载组件文件<http://gitlab.snz1.cn:2007/download/snz1dp/postgres-14.4.tgz>到本地，然后拉取相关依赖镜像转推到项目现场仓库，具体操作如下：
+> 此时本地目录多出一个`postgres-14.4.tgz`文件，用来离线安装
+{.is-success}
+
+### 4.3、转推相关Docker镜像
+
+> 离线安装要求拉取相关Docker镜像，然后转推到项目现场仓库，具体操作如下：
+{.is-info}
 
 ```bash
 docker pull gitlab.snz1.cn:9288/database/postgres:14.4
@@ -95,7 +104,9 @@ docker push repo.docker:2008/database/jwilder/dockerize:0.6.1
 > 注意把`repo.docker:2008`地址换成实际仓库地址。
 {.is-warning}
 
-确保当前操作机器能进行集群操作，执行以下Helm命令安装
+### 4.4、使用Helm命令安装
+
+> 确保当前操作机器能进行集群操作，执行以下Helm命令安装：
 
 ```bash
 helm install \
