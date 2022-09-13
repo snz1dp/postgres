@@ -48,7 +48,7 @@ helm repo add \
 ### 3.2、发布组件包
 
 ```bash
-make publish --helmrepo snz1dp-nexus
+make publish
 ```
 
 > 发布时请按提示输入Nexus用户名及密码。
