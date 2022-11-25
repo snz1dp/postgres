@@ -34,7 +34,7 @@ spec:
 {{ toYaml .Values.job.annotations | indent 8 }}
 {{- end }}
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
 {{- if .Values.image.pullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.image.pullSecrets | indent 8 }}
@@ -78,5 +78,5 @@ spec:
       initContainers:
         - name: wait-for-database
           image: "{{ .Values.image.dockerize }}"
-          command: ['dockerize', '-timeout', '30s', '-wait', 'tcp://{{ template "stolon.fullname" . }}:5432']
+          command: ['dockerize', '-timeout', '60s', '-wait', 'tcp://{{ template "stolon.fullname" . }}:5432']
 {{- end }}
