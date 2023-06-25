@@ -88,8 +88,8 @@ helm pull snz1dp-nexus/postgres --version 14.4
 {.is-info}
 
 ```bash
-docker pull gitlab.snz1.cn:9288/database/postgres:14.4
-docker tag gitlab.snz1.cn:9288/database/postgres:14.4 repo.docker:2008/database/postgres:14.4
+docker pull snz1.cn/database/postgres:14.4
+docker tag snz1.cn/database/postgres:14.4 repo.docker:2008/database/postgres:14.4
 docker push repo.docker:2008/database/postgres:14.4
 
 docker pull sorintlab/stolon:master-pg14
