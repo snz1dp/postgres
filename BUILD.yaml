@@ -13,10 +13,6 @@ docker:
   - linux/amd64
   - linux/arm64
 
-# 组件发布
-helmpush:
-  name: snz1dp-nexus
-
 # 服务定义
 service:
   # 端口定义
