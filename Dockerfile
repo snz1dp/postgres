@@ -1,4 +1,4 @@
-FROM postgres:14.4 AS builder
+FROM postgres:14.10 AS builder
 
 RUN apt-get update; \
   apt-get install -y wget
@@ -22,7 +22,7 @@ ADD extension/install-postgis.sh /opt/
 RUN chmod +x /opt/install-postgis.sh \
   && /opt/install-postgis.sh
 
-FROM postgres:14.4
+FROM postgres:14.10
 
 COPY --from=builder /usr/lib/postgresql /usr/lib/postgresql
 COPY --from=builder /usr/share/postgresql /usr/share/postgresql

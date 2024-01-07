@@ -22,7 +22,7 @@ postgres:
   host: postgres
   install: true
   port: 5432
-  version: "14.4"
+  version: "14.10"
   config:
     envs:
     - MAX_CONNECTIONS="8192"

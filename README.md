@@ -76,10 +76,10 @@ helm repo add \
 
 ```
 helm repo update snz1dp-nexus
-helm pull snz1dp-nexus/postgres --version 14.4
+helm pull snz1dp-nexus/postgres --version 14.10
 ```
 
-> 此时本地目录多出一个`postgres-14.4.tgz`文件，用来离线安装
+> 此时本地目录多出一个`postgres-14.10.tgz`文件，用来离线安装
 {.is-success}
 
 ### 4.3、转推相关Docker镜像
@@ -88,9 +88,9 @@ helm pull snz1dp-nexus/postgres --version 14.4
 {.is-info}
 
 ```bash
-docker pull snz1.cn/database/postgres:14.4
-docker tag snz1.cn/database/postgres:14.4 repo.docker:2008/database/postgres:14.4
-docker push repo.docker:2008/database/postgres:14.4
+docker pull snz1.cn/database/postgres:14.10
+docker tag snz1.cn/database/postgres:14.10 repo.docker:2008/database/postgres:14.10
+docker push repo.docker:2008/database/postgres:14.10
 
 docker pull sorintlab/stolon:master-pg14
 docker tag sorintlab/stolon:master-pg14 repo.docker:2008/database/sorintlab/stolon:master-pg14
@@ -111,11 +111,11 @@ docker push repo.docker:2008/database/jwilder/dockerize:0.6.1
 ```bash
 helm install \
   postgres \ # 安装名称
-  postgres-14.4.tgz \ # 下载的组件文件路径
+  postgres-14.10.tgz \ # 下载的组件文件路径
   --namespace database \ # 请注意更换安装的目标名字空间
   --set image.repository=repo.docker:2008/database/sorintlab/stolon \
   --set image.tag=master-pg14 \
-  --set image.postgres=repo.docker:2008/database/postgres:14.4 \
+  --set image.postgres=repo.docker:2008/database/postgres:14.10 \
   --set image.dockerize=repo.docker:2008/database/jwilder/dockerize:0.6.1 \
   --set persistence.storageClassName=rbd \ # 选择持久卷类型
   --set persistence.size=10Gi \ # 数据库空间大小
