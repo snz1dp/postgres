@@ -1,7 +1,7 @@
 # clusterName:
 image:
   repository: snz1.cn/database/stolon
-  tag: master-pg14
+  tag: master-pg14.10
   pullPolicy: IfNotPresent
   ## Add secrets manually via kubectl on kubernetes cluster and reference here
   pullSecrets: []
