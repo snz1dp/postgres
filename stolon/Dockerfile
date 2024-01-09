@@ -1,3 +1,6 @@
+# 参见：
+# https://github.com/sorintlab/stolon/blob/master/examples/kubernetes/image/docker/Dockerfile
+
 FROM sorintlab/stolon:master-pg14 AS builder
 
 FROM snz1.cn/database/postgres:14.10
