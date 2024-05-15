@@ -5,7 +5,7 @@ name: postgres
 # 镜像编译参数
 docker:
   # 镜像名称
-  image: snz1.cn/database/postgres
+  image: snz1dp/postgres
   # 镜像编译文件(默认：Dockerfile)
   file: Dockerfile
   # 目标平台

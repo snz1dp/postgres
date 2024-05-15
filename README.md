@@ -88,8 +88,8 @@ helm pull snz1dp-nexus/postgres --version 14.10
 {.is-info}
 
 ```bash
-docker pull snz1.cn/database/postgres:14.10
-docker tag snz1.cn/database/postgres:14.10 repo.docker:2008/database/postgres:14.10
+docker pull snz1dp/postgres:14.10
+docker tag snz1dp/postgres:14.10 repo.docker:2008/database/postgres:14.10
 docker push repo.docker:2008/database/postgres:14.10
 
 docker pull sorintlab/stolon:master-pg14
@@ -125,3 +125,30 @@ helm install \
 
 > 注：注意这里使用集群内的镜像仓库地址
 {.is-warning}
+
+## 5、内置插件
+
+### 5.1、PgEmbedding
+
+pg_embedding是一个开源的用于Postgres的向量相似性搜索工具，它使用Hierarchical Navigable Small Worlds进行近似最近邻搜索。
+
+它支持以下功能：
+
+- 使用HNSW进行精确和近似最近邻搜索
+- 使用L2距离
+
+PGEmbedding为您创建pg_embedding扩展，但您需要运行以下Postgres查询来添加它：
+
+```sql
+CREATE EXTENSION IF NOT EXISTS embedding;
+```
+
+### 5.2、PostGIS
+
+PostGIS 是一个 Postgres 扩展，增加了对存储和操作空间数据类型的支持。 当我们构建在地图上存储、操作和可视化数据的软件应用程序时，我们通常需要使用空间数据存储。 我们可以使用谷歌地图或类似应用程序作为典型地理空间可视化软件功能的一个很好的例子。
+
+在我们使用 PostGIS 功能之前，我们需要在 Postgres 中安装扩展：
+
+```sql
+CREATE EXTENSION IF NOT EXISTS postgis;
+```

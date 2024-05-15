@@ -43,5 +43,5 @@ stolon:
 	docker buildx build \
 		--platform linux/amd64,linux/arm64 \
 		-f stolon/Dockerfile \
-		-t snz1.cn/database/stolon:master-pg14.10 \
+		-t snz1dp/stolon:master-pg14.10 \
 		--push .

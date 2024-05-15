@@ -3,7 +3,7 @@
 
 FROM sorintlab/stolon:master-pg14 AS builder
 
-FROM snz1.cn/database/postgres:14.10
+FROM snz1dp/postgres:14.10
 
 RUN useradd -ms /bin/bash stolon
 

@@ -1,13 +1,13 @@
 # clusterName:
 image:
-  repository: snz1.cn/database/stolon
+  repository: snz1dp/stolon
   tag: master-pg14.10
   pullPolicy: IfNotPresent
   ## Add secrets manually via kubectl on kubernetes cluster and reference here
   pullSecrets: []
   #   - name: "myKubernetesSecret"
 
-  postgres: snz1.cn/database/postgres:14.10
+  postgres: snz1dp/postgres:14.10
   dockerize: jwilder/dockerize:0.6.1
 
 debug: false

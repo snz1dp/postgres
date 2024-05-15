@@ -3,3 +3,4 @@ out
 *.log
 .run
 *.tgz
+extension/pg_embedding
