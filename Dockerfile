@@ -38,10 +38,10 @@ FROM postgres:14.10
 COPY --from=builder /usr/lib/postgresql /usr/lib/postgresql
 COPY --from=builder /usr/share/postgresql /usr/share/postgresql
 COPY --from=builder /opt/usr/* /usr/
-COPY --from=builder /lib/* /lib/
 
 RUN apt-get update; \
-  apt-get install -y libcurl4 libtiffxx6
+  apt-get install -y \
+  libcurl4 libtiffxx6 libllvm16
 
 ADD scripts/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
