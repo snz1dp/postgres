@@ -38,6 +38,7 @@ FROM postgres:14.10
 COPY --from=builder /usr/lib/postgresql /usr/lib/postgresql
 COPY --from=builder /usr/share/postgresql /usr/share/postgresql
 COPY --from=builder /opt/usr/* /usr/
+COPY --from=builder /lib/*-linux-gnu /lib/
 
 RUN apt-get update; \
   apt-get install -y libcurl4 libtiffxx6
